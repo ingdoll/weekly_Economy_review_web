@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 쌈뽕깔롱 UI/UX 템플릿 실시간 쇼케이스 데모</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* ----------------------------------------------------
+           상단 테마 컨트롤 스위처 바
+           ---------------------------------------------------- */
+        .switcher-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .switcher-title {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .theme-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+        .theme-btn.active {
+            background: #2563eb;
+            border-color: #3b82f6;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        /* ----------------------------------------------------
+           테마 1: Cyberpunk Glass & Neon Dark (Option A)
+           ---------------------------------------------------- */
+        body.theme-a {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(22, 30, 49, 0.7);
+            --card-border: 1px solid rgba(255, 255, 255, 0.08);
+            --backdrop-blur: blur(20px);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-blue: #38bdf8;
+            --accent-red: #ff4d4d;
+            --badge-bg: linear-gradient(90deg, #0284c7, #38bdf8);
+            --shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.12);
+            --radius: 24px;
+        }
+
+        /* ----------------------------------------------------
+           테마 2: Minimalist Swiss Luxury (Option B)
+           ---------------------------------------------------- */
+        body.theme-b {
+            --bg-color: #f4f5f7;
+            --card-bg: #ffffff;
+            --card-border: 1px solid #e2e8f0;
+            --backdrop-blur: none;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent-blue: #2563eb;
+            --accent-red: #dc2626;
+            --badge-bg: #1e293b;
+            --shadow: 0 12px 30px -10px rgba(15, 23, 42, 0.06);
+            --radius: 16px;
+        }
+
+        /* ----------------------------------------------------
+           테마 3: Neo-Brutalist FinTech (Option C)
+           ---------------------------------------------------- */
+        body.theme-c {
+            --bg-color: #f8f9ff;
+            --card-bg: #ffffff;
+            --card-border: 2px solid #e0e7ff;
+            --backdrop-blur: none;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --accent-blue: #4f46e5;
+            --accent-red: #f43f5e;
+            --badge-bg: linear-gradient(90deg, #6366f1, #8b5cf6);
+            --shadow: 0 16px 32px -12px rgba(99, 102, 241, 0.15);
+            --radius: 28px;
+        }
+
+        /* ----------------------------------------------------
+           공통 데모 레이아웃
+           ---------------------------------------------------- */
+        .wrapper {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 40px 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--backdrop-blur);
+            border: var(--card-border);
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .badge {
+            background: var(--badge-bg);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .summary-body {
+            color: var(--text-primary);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .summary-body b {
+            color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .data-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--backdrop-blur);
+            border: var(--card-border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .data-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .ticker-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+        }
+
+        .current-price {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .change-pill {
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        .change-down { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+        .change-up { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
+
+        .dummy-chart {
+            height: 100px;
+            margin-top: 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px dashed var(--text-muted);
+        }
+
+        .insight-box {
+            background: var(--card-bg);
+            backdrop-filter: var(--backdrop-blur);
+            border: var(--card-border);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin-top: 24px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+<body class="theme-a">
+
+    <!-- 상위 테마 스위처 바 -->
+    <div class="switcher-bar">
+        <div class="switcher-title">
+            <span>🎨 쌈뽕깔롱 템플릿 실시간 쇼케이스 데모</span>
+        </div>
+        <div class="theme-buttons">
+            <button class="theme-btn active" onclick="setTheme('theme-a', this)">🌌 Option A: Cyberpunk Neon</button>
+            <button class="theme-btn" onclick="setTheme('theme-b', this)">💎 Option B: Swiss Luxury</button>
+            <button class="theme-btn" onclick="setTheme('theme-c', this)">🚀 Option C: Neo-Brutalist</button>
+        </div>
+    </div>
+
+    <!-- 데모 프리뷰 컨텐츠 -->
+    <div class="wrapper">
+        <div class="summary-card">
+            <div class="badge">Weekly Economy Summary</div>
+            <div class="summary-body">
+                이번 주 글로벌 금융시장은 <b>미국 소비자물가지수(CPI) 둔화</b> 발표와 함께 연준의 금리 인하 가시성이 크게 높아지며 강력한 랠리를 펼쳤습니다. 주초 기술주 변동성 확대로 나타났던 단기 심리 위축을 신속히 극복하고, <b>위험자산 전반으로 대규모 자금 유입</b>이 재개되는 양상을 보여주었습니다.
+            </div>
+        </div>
+
+        <h2>📈 1. 국내 증시 (KOSPI / KOSDAQ)</h2>
+        <div class="cards-grid">
+            <div class="data-card">
+                <div class="ticker-name">코스피 (KOSPI)</div>
+                <div class="price-row">
+                    <span class="current-price">6,258.77</span>
+                    <span class="change-pill change-down">−337.00 (−5.10%)</span>
+                </div>
+                <div class="dummy-chart">📊 Plotly 시계열 선 차트 영역</div>
+            </div>
+            <div class="data-card">
+                <div class="ticker-name">코스닥 (KOSDAQ)</div>
+                <div class="price-row">
+                    <span class="current-price">798.81</span>
+                    <span class="change-pill change-up">+79.05 (+10.98%)</span>
+                </div>
+                <div class="dummy-chart">📊 Plotly 시계열 선 차트 영역</div>
+            </div>
+        </div>
+        <div class="insight-box">
+            <b>Market Insight:</b> 이번 주 국내 증시는 대형주 차익실현 속 <b>코스피 -5.10%(6,258.77p)</b> 조정과 <b>코스닥 +10.98%(798.81p)</b> 폭등의 차별화 장세를 기록했습니다. 코스피는 주초 반도체 조정 여파로 8월 6일 매도 사이드카가 발동되는 진통을 겪었으나 주 후반 하방을 굳건히 다졌습니다.
+        </div>
+
+        <h2>🪙 2. 암호화폐 & 원자재</h2>
+        <div class="cards-grid">
+            <div class="data-card">
+                <div class="ticker-name">비트코인 (BTC/USD)</div>
+                <div class="price-row">
+                    <span class="current-price">$64,910.32</span>
+                    <span class="change-pill change-up">+$1,435.00 (+2.25%)</span>
+                </div>
+                <div class="dummy-chart">📊 Plotly 시계열 선 차트 영역</div>
+            </div>
+            <div class="data-card">
+                <div class="ticker-name">금 선물 (Gold)</div>
+                <div class="price-row">
+                    <span class="current-price">$4,401.30</span>
+                    <span class="change-pill change-up">+$352.10 (+8.70%)</span>
+                </div>
+                <div class="dummy-chart">📊 Plotly 시계열 선 차트 영역</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setTheme(themeName, btn) {
+            document.body.className = themeName;
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
